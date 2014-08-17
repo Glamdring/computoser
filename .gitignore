@@ -4,3 +4,4 @@
 .classpath
 .hgignore
 .project
+config/production.properties
