@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+            http://www.springframework.org/schema/aop
+            http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+            http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+            http://www.springframework.org/schema/context
+            http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+    <bean
+        class="org.springframework.social.twitter.connect.TwitterConnectionFactory" id="twitterConnectionFactory">
+        <constructor-arg name="consumerKey" index="0" value="${twitter.app.key}" />
+        <constructor-arg name="consumerSecret" index="1" value="${twitter.app.secret}" />
+    </bean>
+
+    <bean
+        class="org.springframework.social.facebook.connect.FacebookConnectionFactory" id="facebookConnectionFactory">
+        <constructor-arg name="clientId" index="0" value="${facebook.app.id}" />
+        <constructor-arg name="clientSecret" index="1" value="${facebook.app.secret}" />
+    </bean>
+
+     <!-- TODO google -->
+
+     <bean class="org.springframework.social.connect.support.ConnectionFactoryRegistry" id="connectionFactoryLocator">
+        <aop:scoped-proxy proxy-target-class="false"/>
+        <property name="connectionFactories">
+            <list>
+                <ref bean="twitterConnectionFactory"/>
+                <ref bean="facebookConnectionFactory"/>
+            </list>
+        </property>
+    </bean>
+
+
+    <bean id="usersConnectionRepository" class="com.music.service.auth.JpaUsersConnectionRepository">
+        <aop:scoped-proxy proxy-target-class="false"/>
+    </bean>
+
+    <bean id="connectionRepository" factory-method="createConnectionRepository"
+        factory-bean="usersConnectionRepository" scope="request">
+        <!-- TODO use the proper user id-->
+        <constructor-arg value="#{request.userPrincipal.name}" />
+        <aop:scoped-proxy proxy-target-class="false" />
+    </bean>
+
+    <bean id="textEncryptor" class="org.springframework.security.crypto.encrypt.Encryptors"
+            factory-method="noOpText" />
+</beans>

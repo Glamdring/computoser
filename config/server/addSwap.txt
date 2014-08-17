@@ -1,0 +1,11 @@
+Type the following command with count being equal to the desired block size:
+dd if=/dev/zero of=/swapfile bs=1M count=1024
+
+Setup the swap file with the command:
+mkswap /swapfile
+
+To enable the swap file immediately but not automatically at boot time:
+swapon /swapfile
+
+To enable it at the boot time, add the following entry into /etc/fstab:
+/swapfile swap swap defaults 0 0

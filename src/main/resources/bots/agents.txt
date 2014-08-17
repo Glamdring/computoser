@@ -1,0 +1,24 @@
+libwww
+lwp-trivial
+curl
+PHP/
+urllib
+GT::WWW
+Snoopy
+MFC_Tear_Sample
+HTTP::Lite
+PHPCrawl
+URI::Fetch
+Zend_Http_Client
+http client
+PECL::HTTP
+panscient.com
+IBM EVV
+Bork-edition
+Fetch API Request.
+WEP Search
+Wells Search II
+Missigua Locator
+ISC Systems iRc Search 2.1
+Microsoft URL Control
+Indy Library

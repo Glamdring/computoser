@@ -1,0 +1,16 @@
+<html>
+<body>
+<div style="font-family: 'Lucida Grande', Helvetica, 'Helvetica Neue', Arial, Tahoma, sans-serif; font-size: 14px;">
+<h4>Your computer-generated track digest</h4>
+<a style="font-size: 9px;" href="$baseUrl/digestEmailUnsubscribe/$currentUser.id?hash=${hmac}">unsubscribe</a><br /><br />
+
+#foreach ($piece in $pieces)
+    <a href="${baseUrl}/track/${piece.id}">${piece.title}</a><br />
+#end
+
+<hr />
+Best regards,
+Computoser
+</div>
+</body>
+</html>

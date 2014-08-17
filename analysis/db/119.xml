@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<super>
+    <meta>
+        <artist>The Killers</artist>
+        <title>Mr Brightside</title>
+        <beats_in_measure>4</beats_in_measure>
+        <key>Db</key>
+        <YouTubeID>gGdGFtwCNBE</YouTubeID>
+        <sections>
+            <Chorus>
+                <normalization>1.00</normalization>
+                <global_start>60.80</global_start>
+                <section_duration>29.20</section_duration>
+                <active_start>0.82</active_start>
+                <active_stop>28.36</active_stop>
+            </Chorus>
+            <halfChorus>
+                <normalization>1.00</normalization>
+                <global_start>73.75</global_start>
+                <section_duration>16.26</section_duration>
+                <active_start>0.82</active_start>
+                <active_stop>15.42</active_stop>
+            </halfChorus>
+        </sections>
+    </meta>
+    <sections>
+        <Chorus>
+            <segment>
+                <numBeats>32</numBeats>
+                <chords>
+                    <chord>
+                        <sd>1</sd>
+                        <fb />
+                        <sec />
+                        <sus />
+                        <flat />
+                        <pedal />
+                        <alternate />
+                        <borrowed />
+                        <chord_duration>4</chord_duration>
+                        <start_measure>1</start_measure>
+                        <start_beat>1</start_beat>
+                        <start_beat_abs>0</start_beat_abs>
+                    </chord>
+                    <chord>
+                        <sd>4</sd>
+                        <fb />
+                        <sec />
+                        <sus />
+                        <flat />
+                        <pedal />
+                        <alternate />
+                        <borrowed />
+                        <chord_duration>4</chord_duration>
+                        <start_measure>2</start_measure>
+                        <start_beat>1</start_beat>
+                        <start_beat_abs>4</start_beat_abs>
+                    </chord>
+                    <chord>
+                        <sd>6</sd>
+                        <fb />
+                        <sec />
+                        <sus />
+                        <flat />
+                        <pedal />
+                        <alternate />
+                        <borrowed />
+                        <chord_duration>4</chord_duration>
+                        <start_measure>3</start_measure>
+                        <start_beat>1</start_beat>
+                        <start_beat_abs>8</start_beat_abs>
+                    </chord>
+                    <chord>
+                        <sd>5</sd>
+                        <fb />
+                        <sec />
+                        <sus />
+                        <flat />
+                        <pedal />
+                        <alternate />
+                        <borrowed />
+                        <chord_duration>4</chord_duration>
+                        <start_measure>4</start_measure>
+                        <start_beat>1</start_beat>
+                        <start_beat_abs>12</start_beat_abs>
+                    </chord>
+                    <chord>
+                        <sd>1</sd>
+                        <fb />
+                        <sec />
+                        <sus />
+                        <flat />
+                        <pedal />
+                        <alternate />
+                        <borrowed />
+                        <chord_duration>4</chord_duration>
+                        <start_measure>5</start_measure>
+                        <start_beat>1</start_beat>
+                        <start_beat_abs>16</start_beat_abs>
+                    </chord>
+                    <chord>
+                        <sd>4</sd>
+                        <fb />
+                        <sec />
+                        <sus />
+                        <flat />
+                        <pedal />
+                        <alternate />
+                        <borrowed />
+                        <chord_duration>4</chord_duration>
+                        <start_measure>6</start_measure>
+                        <start_beat>1</start_beat>
+                        <start_beat_abs>20</start_beat_abs>
+                    </chord>
+                    <chord>
+                        <sd>6</sd>
+                        <fb />
+                        <sec />
+                        <sus />
+                        <flat />
+                        <pedal />
+                        <alternate />
+                        <borrowed />
+                        <chord_duration>4</chord_duration>
+                        <start_measure>7</start_measure>
+                        <start_beat>1</start_beat>
+                        <start_beat_abs>24</start_beat_abs>
+                    </chord>
+                    <chord>
+                        <sd>5</sd>
+                        <fb />
+                        <sec />
+                        <sus />
+                        <flat />
+                        <pedal />
+                        <alternate />
+                        <borrowed />
+                        <chord_duration>4</chord_duration>
+                        <start_measure>8</start_measure>
+                    </chord>
+                </chords>
+            </segment>
+        </Chorus>
+    </sections>
+</super>

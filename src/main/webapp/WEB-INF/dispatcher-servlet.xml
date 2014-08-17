@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop" xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+    http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.1.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+    http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd">
+
+    <context:component-scan base-package="com.music.web" />
+
+    <context:property-placeholder
+        location="file:${music.config.location}/application.properties" />
+
+    <bean class="org.springframework.social.connect.web.ProviderSignInController">
+        <property name="signUpUrl" value="/socialSignUp"/>
+    </bean>
+
+    <!-- mapping images, js and styles with separate mappings. Otherwise it conflicts with ResourceController mapping. -->
+    <mvc:resources mapping="/static/img/**" location="/img/" cache-period="0" />
+    <mvc:resources mapping="/static/scripts/**" location="/scripts/" cache-period="0" />
+    <mvc:resources mapping="/static/styles/**" location="/styles/" cache-period="0" />
+    <mvc:resources mapping="/static/playerSkins/**" location="/playerSkins/" cache-period="0" />
+
+    <mvc:resources mapping="*.txt" location="/WEB-INF/jsp/txt/" />
+
+    <!-- setting all desired beans that are otherwise automaticaly defined by
+        mvc:annotation-driven -->
+    <!-- JSR-303 support will be detected on classpath and enabled automatically -->
+    <bean id="validator"
+        class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
+    <!-- Conversion -->
+    <bean id="conversionService"
+        class="org.springframework.format.support.FormattingConversionServiceFactoryBean" />
+
+    <mvc:annotation-driven />
+
+    <bean class="org.springframework.web.servlet.view.BeanNameViewResolver"
+        p:order="0" />
+
+    <!-- - This bean configures the 'prefix' and 'suffix' properties of - InternalResourceViewResolver,
+        which resolves logical view names - returned by Controllers. For example,
+        a logical view name of "signup" - will be mapped to "/WEB-INF/jsp/signup.jsp". -->
+    <bean id="viewResolver"
+        class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass"
+            value="org.springframework.web.servlet.view.JstlView" />
+        <property name="prefix" value="/WEB-INF/jsp/" />
+        <property name="suffix" value=".jsp" />
+        <property name="order" value="1" />
+        <property name="exposeContextBeansAsAttributes" value="true"/>
+    </bean>
+
+    <bean id="localeResolver"
+        class="org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver" />
+
+    <bean id="multipartResolver"
+        class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- one of the properties available; the maximum file size in bytes -->
+        <property name="maxUploadSize" value="2000000" />
+    </bean>
+
+    <bean id="servletContextAttributeExporter" class="org.springframework.web.context.support.ServletContextAttributeExporter">
+        <property name="attributes">
+            <map>
+                <entry key="paymentEnabled" value="${payment.enabled}" />
+                <entry key="bitcoinEnabled" value="${bitcoin.enabled}" />
+            </map>
+        </property>
+    </bean>
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <ref bean="autoLoginInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+</beans>

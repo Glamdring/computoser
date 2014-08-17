@@ -1,0 +1,12 @@
+<html>
+<body>
+<div style="font-family: 'Lucida Grande', Helvetica, 'Helvetica Neue', Arial, Tahoma, sans-serif; font-size: 14px;">
+<h4>Thank you for your purchase!</h4>
+<a style="font-size: 9px;" href="${zipUrl}">Download your tracks here</a><br /><br />
+
+<hr />
+Best regards,
+Computoser
+</div>
+</body>
+</html>

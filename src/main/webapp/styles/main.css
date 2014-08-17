@@ -1,0 +1,67 @@
+.main {
+    text-align: center;
+}
+
+.centered-player {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 17px;
+}
+
+.centered {
+    margin-left: auto;
+    margin-right: auto;
+}
+.preference-panel {
+    margin-bottom: 20px;
+}
+
+.preference-panel label, #answerPanel label {
+    display: inline;
+    margin-left: 3px;
+    margin-right: 10px;
+}
+
+.footer {
+    text-align: center;
+}
+
+#trackTitle {
+    min-height: 20px;
+}
+
+.alert-message {
+    opacity: 50%;
+    background-color: #FFF8DC;
+    width: 200px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    border-style: solid;
+    border-width: 1px;
+    font-weight: bold;
+    padding: 15px;
+    text-align: center;
+    margin-right: auto;
+    margin-left: auto;
+    right: 0;
+    left: 0;
+    position: absolute;
+    top: 40px;
+}
+
+.logo {
+    float: left;
+    vertical-align: middle;
+    border-style: none;
+    margin-right: 5px;
+}
+
+.searchForm label {
+    font-size: 0.9em;
+}
+
+.nav-pills > li > a {
+    padding-right: 11px;
+    padding-left: 11px;
+}

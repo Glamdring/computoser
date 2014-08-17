@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+    <target>System.out</target>
+    <encoder>
+      <charset>UTF-8</charset>
+      <pattern>%d %5p %c{1}:%L - %m%n</pattern>
+    </encoder>
+  </appender>
+  <root level="info">
+    <appender-ref ref="stdout"/>
+  </root>
+  <logger name="org.hibernate.cfg.beanvalidation.BeanValidationEventListener" level="trace"/>
+  <logger name="org.springframework" level="warn"/>
+  <logger name="org.hibernate.tool.hbm2ddl" level="warn"/>
+  <logger name="org.hibernate" level="info"/>
+  <logger name="com.music" level="info"/>
+  <logger name="org.hibernate.SQL" level="info"/>
+  <logger name="org.hibernate.stat" level="warn"/>
+  <logger name="org.hibernate.engine.internal.StatisticalLoggingSessionEventListener" level="warn" />
+
+  <!-- logger name="org.hibernate.hql" level="debug" /-->
+  <!-- logger name="org.hibernate.cache" level="info" /-->
+  <!-- logger name="org.hibernate.jdbc" level="debug" /-->
+  <!-- enable the following line if you want to track down connection leakages when using DriverManagerConnectionProvider-->
+  <!-- logger name="org.hibernate.connection.DriverManagerConnectionProvider" level="trace" /-->
+</configuration>

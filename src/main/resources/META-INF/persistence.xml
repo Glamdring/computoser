@@ -1,0 +1,21 @@
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+    version="2.0">
+
+    <persistence-unit name="computoser" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+
+        <!-- cache everything, unless marked with @Cacheable(false) -->
+        <shared-cache-mode>DISABLE_SELECTIVE</shared-cache-mode>
+        <properties>
+            <!-- Cache -->
+            <property name="hibernate.cache.use_query_cache" value="true" />
+            <property name="hibernate.cache.use_second_level_cache" value="true" />
+            <property name="hibernate.cache.region.factory_class"
+                value="org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory" />
+            <property name="hibernate.cache.default_cache_concurrency_strategy"
+                value="read-write" />
+        </properties>
+    </persistence-unit>
+</persistence>

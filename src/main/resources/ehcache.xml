@@ -1,0 +1,60 @@
+<ehcache xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
+    updateCheck="true" monitoring="autodetect" dynamicConfig="true">
+
+    <!-- other caches are defined directly in spring, caches.xml -->
+
+    <diskStore path="java.io.tmpdir"/>
+
+    <defaultCache
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+        diskPersistent="false"
+        memoryStoreEvictionPolicy="LRU"
+        statistics="true" />
+
+    <!-- 20 minutes -->
+    <cache
+        name="topPiecesCache"
+        maxElementsInMemory="5000"
+        timeToLiveSeconds="1200"
+        overflowToDisk="false"/>
+
+    <!-- 5 minutes -->
+    <cache
+        name="topRecentPiecesCache"
+        maxElementsInMemory="5000"
+        timeToLiveSeconds="300"
+        overflowToDisk="false"/>
+
+    <!-- 12 hours -->
+    <cache
+        name="rssCache"
+        maxElementsInMemory="5000"
+        timeToLiveSeconds="43200"
+        overflowToDisk="false"/>
+
+    <!-- 6 hours -->
+    <cache
+        name="bitcoinRatesCache"
+        maxElementsInMemory="5000"
+        timeToLiveSeconds="21600"
+        overflowToDisk="false"/>
+
+    <cache
+        name="org.hibernate.cache.internal.StandardQueryCache"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToLiveSeconds="120"
+        overflowToDisk="false" />
+
+    <cache
+        name="org.hibernate.cache.spi.UpdateTimestampsCache"
+        maxElementsInMemory="5000"
+        eternal="true"
+        overflowToDisk="false"/>
+
+    <transactionManagerLookup class="net.sf.ehcache.transaction.manager.DefaultTransactionManagerLookup" />
+</ehcache>

@@ -1,0 +1,2 @@
+CATALINA_OPTS="$CATALINA_OPTS -server -Xms550m -Xmx550m -XX:MaxPermSize=75m -Dmusic.config.location=/mnt/config -Djava.awt.headless=true -XX:+UseCompressedOops"
+CATALINA_OPTS="$CATALINA_OPTS -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=true -Dcom.sun.management.jmxremote.password.file=/opt/apache-tomcat-7.0.32/conf/jmxremote.password -Dcom.sun.management.jmxremote.access.file=/opt/apache-tomcat-7.0.32/conf/jmxremote.access -Djava.rmi.server.hostname=computoser.com"

@@ -1,0 +1,29 @@
+<super>
+			  	<meta>
+					<artist>Tom Petty</artist>
+					<title>Into The Great Wide Open</title>
+					<beats_in_measure>4</beats_in_measure>
+					<BPM>128</BPM>
+					<key>C</key>
+					<YouTubeID/>
+					<sections>
+						<_Verse>
+						<global_start>0</global_start>
+						<section_duration>243</section_duration>
+						<active_start>0</active_start>
+						<active_stop>0.27</active_stop>
+						</_Verse>
+					</sections>
+				</meta>
+			  	<sections>
+					<_Verse>
+					<segment>
+					<instrument/>
+					<rhythm/>
+					<notes/>
+					<chords/>
+					<numMeasures>8</numMeasures>
+					</segment>
+					</_Verse>
+				</sections>
+			</super>

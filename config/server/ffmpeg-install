@@ -1,0 +1,25 @@
+http://d.stavrovski.net/blog/post/install-ffmpeg-and-ffmpeg-php-in-centos-6-with-virtualmin
+
+
+4. Add dag's repository by adding the following to /etc/yum.repos.d/dag.repo
+
+[dag]
+name=Dag RPM Repository for Red Hat Enterprise Linux
+baseurl=http://apt.sw.be/redhat/el$releasever/en/$basearch/dag
+gpgcheck=1
+gpgkey=http://dag.wieers.com/packages/RPM-GPG-KEY.dag.txt
+enabled=1
+protect=0
+
+next import dag's rpm gpg key by
+
+wget http://dag.wieers.com/packages/RPM-GPG-KEY.dag.txt -P /tmp
+rpm --import /tmp/RPM-GPG-KEY.dag.txt
+
+5. Proceed with installing FFMPEG and some development packages
+
+yum install ffmpeg-devel php-devel re2c php-xml ffmpeg
+
+verify FFMPEG is installed successfully by executing
+
+ffmpeg

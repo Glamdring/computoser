@@ -1,0 +1,9 @@
+User-agent: *
+Disallow: /get
+Disallow: /getMidi
+Disallow: /getXml
+Disallow: /getTitle
+Disallow: /get/
+Disallow: /getMidi/
+Disallow: /getXml/
+Disallow: /getTitle/

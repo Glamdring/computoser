@@ -1,0 +1,37 @@
+TODO:
+
+- chillout
+- coherence?
+- fetch length and preset to player?
+- add more complex beats to the SimpleBeat (and rename)
+- resolve diminished 7th chord?
+- tonic-dominant change
+- ambiguity...
+- change one of the tones in a scale up/down half a tone?
+- http://en.wikipedia.org/wiki/Modulation_%28music%29#Enharmonic_modulation
+- repeat a group of notes followed by different notes (anaphora)
+- cannon, fugue, rondo
+- symmetry
+- change scale within motif?
+- change scale by just changing the key (and retaining the key signature)
+- change scale within theme (modulate), the old and new scale should share 5 or 6 tones
+- choose 'fast', 'normal' and 'slow, influencing preferred note lengths
+- bass follow mainline?
+- better drum patterns?
+- follow note-intensive measures with few two-note measures
+- commerce arrangement
+- structure - A, (A), B, A, coda
+- allow few "free notes" between the motifs
+- reduce the percentage of unisons. Add unison sequences instead.
+- contrast
+- improve endings
+- "javert suicide"-type effects
+- customize arpeggo?
+- change tempo?
+- trumpets
+- techno beats
+- dubstep?
+- disallow pads in case of guitar. other similar constraints.
+- front and back phrasing - shift the rhythm of a motif back or forward by a rest
+- fugue type - left hand main
+- two (or more) simultatineous notes in main

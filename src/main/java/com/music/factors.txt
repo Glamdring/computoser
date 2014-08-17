@@ -1,0 +1,11 @@
+mode
+scale (transpose by X)
+number of parts (1 main, x accompanying)
+instruments of each part
+tempo/dynamic
+metre
+whether a it's a note or a chord
+duration of a note/chord
+the value of a note/chord
+pauses
+transitions
