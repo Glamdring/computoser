@@ -69,6 +69,8 @@ public class MainPartGenerator implements ScoreManipulator {
         // TODO http://en.wikipedia.org/wiki/Tonicization (+ secondary dominant)
         // http://en.wikipedia.org/wiki/Nonchord_tone (All types of tones below)
         // http://en.wikipedia.org/wiki/Counterpoint allow for a secondary main part instead of accompaniment
+        // http://www.solomonsmusic.net/vartech.htm
+        // http://dolmetsch.com/form.pdf
 
         logger.debug("Generating piece with ctx=" + ctx);
 

@@ -36,11 +36,14 @@ Each track you hear is algorithmically generated.</p>
     <div style="margin-top: -5px;">For email subscription - please <a href="${root}/signup">sign up</a>.</div>
 </c:if>
 <div class="row-fluid" style="text-align: left; margin-right: auto; margin-left: auto;">
-    <h4>Configure your preferences for the next track</h4>
+    <h4>Configure your preferences for the next tracks</h4>
     <form id="preferences">
         <c:set var="customizationsSpanWidth" value="6" />
         <%@ include file="customizations.jsp" %>
     </form>
+    <div align="center" style="clear: both;">
+        <input type="button" onclick="next();" class="btn" value="Play" />
+    </div>
 </div>
 </div>
 <%@ include file="footer.jsp" %>
