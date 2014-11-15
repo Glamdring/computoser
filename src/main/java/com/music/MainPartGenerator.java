@@ -68,7 +68,7 @@ public class MainPartGenerator implements ScoreManipulator {
     public void handleScore(Score score, ScoreContext ctx) {
         // TODO http://en.wikipedia.org/wiki/Tonicization (+ secondary dominant)
         // http://en.wikipedia.org/wiki/Nonchord_tone (All types of tones below)
-        // http://en.wikipedia.org/wiki/Counterpoint allow for a secondary main part instead of accompaniment
+        // http://en.wikipedia.org/wiki/Counterpoint allow for a secondary main part instead of accompaniment (counterpoint part should follow main part somehow)
         // http://www.solomonsmusic.net/vartech.htm
         // http://dolmetsch.com/form.pdf
 

@@ -22,7 +22,7 @@
 <div class="main">
 
 <h1>Listen to unique, computer-generated music...</h1>
-<p class="lead">Computoser is an algorithm that turns the computer into a music composer.<br />
+<p class="lead">Computoser is an "artificial intelligence" algorithm that turns the computer into a music composer.<br />
 Each track you hear is algorithmically generated.</p>
 <%@ include file="signin.jsp" %>
 <%@ include file="player.jsp" %>
@@ -42,7 +42,7 @@ Each track you hear is algorithmically generated.</p>
         <%@ include file="customizations.jsp" %>
     </form>
     <div align="center" style="clear: both;">
-        <input type="button" onclick="next();" class="btn" value="Play" />
+        <input type="button" onclick="shouldAutoPlay = true; next();" class="btn" value="Play" />
     </div>
 </div>
 </div>
