@@ -9,6 +9,7 @@
 <link href="${staticRoot}/styles/main.css" rel="stylesheet" type="text/css" media="screen"/>
 <link href="${staticRoot}/playerSkins/jplayer.blue.monday.css" rel="stylesheet" type="text/css" media="screen"/>
 <link href="${baseUrl}/${root}/rss" title="Computoser - computer-generated tracks feed" type="application/rss+xml" rel="alternate" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <script type="text/javascript" src="${staticRoot}/scripts/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="https://login.persona.org/include.js"></script>
