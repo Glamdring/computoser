@@ -7,7 +7,7 @@
 <%@ include file="header.jsp" %>
 <%@ include file="playerScripts.jsp" %>
 Below is a list of <span style="font-weight: bold;">free stock audio packs</span>, curated for specific use-cases. <br />
-If you use them, you are welcome to <a href="bozhidar.bozhanov@gmail.com">contact me</a> with your story of how they worked for you.<br /><br />
+If you use them, you are welcome to <a href="mailto:bozhidar.bozhanov@gmail.com">contact me</a> with your story of how they worked for you.<br /><br />
 
 <div style="float: right;">
 Feel free to donate

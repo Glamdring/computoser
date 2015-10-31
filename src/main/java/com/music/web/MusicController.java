@@ -69,6 +69,8 @@ public class MusicController {
     private String baseUrl;
     @Value("${hmac.key}")
     private String hmacKey;
+    @Value("${cloudfront.root}")
+    private String cloudfrontRoot;
 
     @RequestMapping("/music/get")
     @ResponseBody
@@ -101,9 +103,7 @@ public class MusicController {
         }
         response.setHeader("Content-Disposition", "attachment; filename=\"" + id + ".mp3\"");
         setNotCacheable(response);
-        response.setContentType("audio/mp3");
-        InputStream is = pieceService.getPieceFile(id);
-        IOUtils.copy(is, os);
+        response.sendRedirect(cloudfrontRoot + "/" + id + ".mp3");
     }
 
     @RequestMapping("/music/getMidi/{id}")

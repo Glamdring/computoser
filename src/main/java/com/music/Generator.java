@@ -89,7 +89,7 @@ public class Generator {
     @Value("${max.concurrent.generations}")
     private int maxConcurrentGenerations;
 
-    private Semaphore semaphore;
+    public Semaphore semaphore;
 
     private static List<Soundbank> soundbanks = new ArrayList<>();
 
