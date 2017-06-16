@@ -35,3 +35,8 @@ TODO:
 - front and back phrasing - shift the rhythm of a motif back or forward by a rest
 - fugue type - left hand main
 - two (or more) simultatineous notes in main
+
+- Vizualize musuc in android app ctoser
+- dramatic horn / trumpet (end of 'confrontation)
+- Accompaniment with more diverse patters. Check fur elise
+- Refactor to make randomness dependent on parameters?
