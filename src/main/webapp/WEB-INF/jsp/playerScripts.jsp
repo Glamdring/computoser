@@ -8,7 +8,7 @@ var previousPlayedId = -1;
 var shouldAutoPlay = false;
 var android = ${request.getHeader('User-Agent').contains('Android') ? 'true' : 'false'};
 var error = false;
-var jPlayerOptions = {swfPath: "${staticRoot}/scripts/jplayer.swf", supplied: "mp3", solution: "flash,html", ready: function() {
+var jPlayerOptions = {swfPath: "${staticRoot}/scripts/jplayer.swf", supplied: "mp3", solution: "html,flash", ready: function() {
     var player = $(this);
     if (predefinedId == '' && !lazyLoad) {
         loadTrack();
@@ -29,6 +29,7 @@ var jPlayerOptions = {swfPath: "${staticRoot}/scripts/jplayer.swf", supplied: "m
     shouldAutoPlay = true;
 }, error: function(e){
     //storeJsError(); TODO send error to server and store
+    console.log(e);
     newAlert("warning", "Sorry, a problem occured. Please click 'next' or refresh the page");
 }};
 

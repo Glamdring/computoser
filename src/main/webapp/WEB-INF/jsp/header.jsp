@@ -12,39 +12,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <script type="text/javascript" src="${staticRoot}/scripts/jquery-1.10.2.min.js"></script>
-<script type="text/javascript" src="https://login.persona.org/include.js"></script>
 <script type="text/javascript" src="${staticRoot}/scripts/jquery.jplayer.min.js"></script>
 <script type="text/javascript" src="${staticRoot}/scripts/bootstrap.min.js"></script>
 ${head}
 <meta name="description" content="Algorithmic computer-generated, artificial-intelligence music that can be used for anything - listening to, building upon or commercial purposes (free stock audio/elevator music/on hold music)." />
 <meta name="keywords" content="stock,audio,algorithm,music,algorithmic,computer-generated,elevator,supermarket,hold,free,artificial,intelligence" />
-<script type="text/javascript">
-    var loggedInUser = '${userContext.user != null ? userContext.user.email : null}';
-    var userRequestedAuthentication = false;
-    $(document).ready(function() {
-        navigator.id.watch({
-            loggedInUser : loggedInUser,
-            onlogin : function(assertion) {
-                $.ajax({
-                    type : 'POST',
-                    url : '${root}/persona/auth',
-                    data : {assertion : assertion, userRequestedAuthentication : userRequestedAuthentication},
-                    success : function(data) {
-                        if (data != '') {
-                            window.location.href = '${root}' + data;
-                        }
-                    },
-                    error : function(xhr, status, err) {
-                        alert("Authentication failure: " + err);
-                    }
-                });
-            },
-            onlogout : function() {
-                //window.location.href = "${root}/logout";
-            }
-        });
-    });
-</script>
 </head>
 <body>
 <c:if test="${currentPage =='home'}">
