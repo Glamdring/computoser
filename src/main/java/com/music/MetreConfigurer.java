@@ -20,21 +20,26 @@ package com.music;
 
 import java.util.Random;
 
+import com.music.model.prefs.Tempo;
+import com.music.model.prefs.UserPreferences;
+import com.music.util.music.Chance;
+
 import jm.JMC;
 import jm.music.data.Score;
-
-import com.music.model.prefs.Tempo;
-import com.music.util.music.Chance;
 
 public class MetreConfigurer implements ScoreManipulator {
     private Random random = new Random();
 
     @Override
-    public void handleScore(Score score, ScoreContext ctx) {
+    public void handleScore(Score score, ScoreContext ctx, UserPreferences prefs) {
         int[] metre = getRandomMetre(random);
 
-        double tempo = Tempo.ANY.getFrom() + random.nextInt(Tempo.ANY.getTo() - Tempo.ANY.getFrom());
-        score.setTempo(tempo);
+        if (prefs != null && prefs.getTempo() != null) {
+            score.setTempo(prefs.getTempo().getFrom() 
+                    + random.nextInt(prefs.getTempo().getTo() - prefs.getTempo().getFrom()));
+        } else {
+            score.setTempo(Tempo.ANY.getFrom() + random.nextInt(Tempo.ANY.getTo() - Tempo.ANY.getFrom()));
+        }
 
         ctx.setMetre(metre);
         score.setNumerator(metre[0]);
@@ -42,7 +47,11 @@ public class MetreConfigurer implements ScoreManipulator {
 
         double normalizedMeasureSize = getNormalizedMeasureSize(ctx.getMetre());
         ctx.setNormalizedMeasureSize(normalizedMeasureSize);
-        ctx.setMeasures((int) ((10 + random.nextInt(10)) * tempo / 40));
+        if (prefs != null && prefs.getMeasures() != 0) {
+            ctx.setMeasures(prefs.getMeasures());
+        } else {
+            ctx.setMeasures((int) ((10 + random.nextInt(10)) * score.getTempo() / 40));
+        }
 
         if (Chance.test(20) && metre[1] < 16) {
             ctx.setUpBeatLength(normalizedMeasureSize - Math.max(1, metre[0] - random.nextInt(3) - 1) * JMC.EIGHTH_NOTE);

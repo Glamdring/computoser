@@ -24,14 +24,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import jm.constants.Instruments;
-import jm.music.data.Note;
-import jm.music.data.Part;
-import jm.music.data.Phrase;
-import jm.music.data.Rest;
-import jm.music.data.Score;
-import jm.music.tools.Mod;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,10 +35,19 @@ import com.music.model.Scale;
 import com.music.model.SpecialNoteType;
 import com.music.model.ToneGroups;
 import com.music.model.ToneType;
+import com.music.model.prefs.UserPreferences;
 import com.music.util.music.Chance;
 import com.music.util.music.ChordUtils;
 import com.music.util.music.NoteFactory;
 import com.music.util.music.ToneResolver;
+
+import jm.constants.Instruments;
+import jm.music.data.Note;
+import jm.music.data.Part;
+import jm.music.data.Phrase;
+import jm.music.data.Rest;
+import jm.music.data.Score;
+import jm.music.tools.Mod;
 
 public class AccompanimentPartGenerator implements ScoreManipulator {
     private static final Logger logger = LoggerFactory.getLogger(AccompanimentPartGenerator.class);
@@ -54,7 +55,7 @@ public class AccompanimentPartGenerator implements ScoreManipulator {
     private Random random = new Random();
 
     @Override
-    public void handleScore(Score score, ScoreContext ctx) {
+    public void handleScore(Score score, ScoreContext ctx, UserPreferences prefs) {
         Part accompanimentPart = ctx.getParts().get(PartType.ACCOMPANIMENT);
         if (accompanimentPart == null) {
             return;

@@ -20,10 +20,11 @@ package com.music;
 
 import java.util.Random;
 
-import jm.music.data.Score;
-
 import com.music.model.Scale;
+import com.music.model.prefs.UserPreferences;
 import com.music.util.music.Chance;
+
+import jm.music.data.Score;
 
 public class ScaleConfigurer implements ScoreManipulator {
     private Random random = new Random();
@@ -32,11 +33,13 @@ public class ScaleConfigurer implements ScoreManipulator {
     //private int[] MINOR_SCALE_PERCENTAGES = new int[] {0,45,24,7,14,0,0,0,0,0,0,0,10};
 
     @Override
-    public void handleScore(Score score, ScoreContext ctx) {
-        ctx.setScale(getScale());
-        Scale alternativescale = getScale();
+    public void handleScore(Score score, ScoreContext ctx, UserPreferences prefs) {
+        ctx.setScale(prefs != null && prefs.getScale() != null 
+                ? prefs.getScale() 
+                : getRandomScale());
+        Scale alternativescale = getRandomScale();
         while (alternativescale == ctx.getScale()) {
-            alternativescale = getScale();
+            alternativescale = getRandomScale();
         }
         ctx.setAlternativeScale(alternativescale);
 
@@ -46,7 +49,7 @@ public class ScaleConfigurer implements ScoreManipulator {
         //ctx.setKeyNote(keyNote);
     }
 
-    private Scale getScale() {
+    private Scale getRandomScale() {
         Scale[] scales = Scale.values();
         return scales[Chance.choose(SCALE_PERCENTAGES)];
     }

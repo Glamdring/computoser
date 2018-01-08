@@ -18,8 +18,10 @@
 
 package com.music;
 
+import com.music.model.prefs.UserPreferences;
+
 import jm.music.data.Score;
 
 public interface ScoreManipulator {
-    void handleScore(Score score, ScoreContext ctx);
+    void handleScore(Score score, ScoreContext ctx, UserPreferences prefs);
 }

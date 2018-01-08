@@ -20,6 +20,15 @@ package com.music;
 
 import java.util.Random;
 
+import com.music.model.ExtendedPhrase;
+import com.music.model.InstrumentGroups;
+import com.music.model.PartType;
+import com.music.model.Scale;
+import com.music.model.SpecialNoteType;
+import com.music.model.prefs.UserPreferences;
+import com.music.util.music.Chance;
+import com.music.util.music.NoteFactory;
+
 import jm.JMC;
 import jm.music.data.Note;
 import jm.music.data.Part;
@@ -27,20 +36,12 @@ import jm.music.data.Phrase;
 import jm.music.data.Rest;
 import jm.music.data.Score;
 
-import com.music.model.ExtendedPhrase;
-import com.music.model.InstrumentGroups;
-import com.music.model.PartType;
-import com.music.model.Scale;
-import com.music.model.SpecialNoteType;
-import com.music.util.music.Chance;
-import com.music.util.music.NoteFactory;
-
 public class BassPartGenerator implements ScoreManipulator {
 
     private static Random random = new Random();
 
     @Override
-    public void handleScore(Score score, ScoreContext ctx) {
+    public void handleScore(Score score, ScoreContext ctx, UserPreferences prefs) {
         Part bassPart = ctx.getParts().get(PartType.BASS);
         if (bassPart == null) {
             return;

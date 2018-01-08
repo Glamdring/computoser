@@ -20,21 +20,22 @@ package com.music;
 
 import java.util.Random;
 
+import com.music.model.PartType;
+import com.music.model.prefs.UserPreferences;
+import com.music.util.music.Chance;
+import com.music.util.music.NoteFactory;
+
 import jm.music.data.Note;
 import jm.music.data.Part;
 import jm.music.data.Phrase;
 import jm.music.data.Rest;
 import jm.music.data.Score;
 
-import com.music.model.PartType;
-import com.music.util.music.Chance;
-import com.music.util.music.NoteFactory;
-
 public class SimpleBeatGenerator implements ScoreManipulator {
     private Random random = new Random();
 
     @Override
-    public void handleScore(Score score, ScoreContext ctx) {
+    public void handleScore(Score score, ScoreContext ctx, UserPreferences prefs) {
         Part drumPart = ctx.getParts().get(PartType.SIMPLE_BEAT);
         if (drumPart == null) {
             return;

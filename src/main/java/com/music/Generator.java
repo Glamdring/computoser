@@ -18,10 +18,6 @@
 
 package com.music;
 
-import it.sauronsoftware.jave.AudioAttributes;
-import it.sauronsoftware.jave.Encoder;
-import it.sauronsoftware.jave.EncodingAttributes;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
@@ -51,16 +47,13 @@ import javax.sound.midi.Soundbank;
 import javax.sound.midi.Synthesizer;
 import javax.swing.JFrame;
 
-import jm.midi.MidiSynth;
-import jm.music.data.Note;
-import jm.music.data.Part;
-import jm.music.data.Phrase;
-import jm.music.data.Score;
-import jm.music.tools.PhraseAnalysis;
-import jm.util.Play;
-import jm.util.Read;
-import jm.util.Write;
-
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -72,13 +65,26 @@ import org.springframework.util.ReflectionUtils;
 import com.google.common.collect.Maps;
 import com.music.model.ExtendedPhrase;
 import com.music.model.PartType;
-import com.music.model.prefs.Ternary;
+import com.music.model.Scale;
+import com.music.model.prefs.Tempo;
 import com.music.model.prefs.UserPreferences;
 import com.music.tools.SongChart.GraphicsPanel;
 import com.music.util.MutingPrintStream;
 import com.music.util.music.SMFTools;
 import com.music.util.music.ToneResolver;
 import com.music.web.util.StartupListener;
+
+import it.sauronsoftware.jave.AudioAttributes;
+import it.sauronsoftware.jave.Encoder;
+import it.sauronsoftware.jave.EncodingAttributes;
+import jm.midi.MidiSynth;
+import jm.music.data.Note;
+import jm.music.data.Part;
+import jm.music.data.Phrase;
+import jm.music.data.Score;
+import jm.music.tools.PhraseAnalysis;
+import jm.util.Play;
+import jm.util.Write;
 
 @Service
 public class Generator {
@@ -123,7 +129,7 @@ public class Generator {
                 InputStream is = new BufferedInputStream(new FileInputStream(file));
                 soundbanks.add(MidiSystem.getSoundbank(is));
             }
-        } catch (IOException ex) {
+        } catch (IOException | IllegalArgumentException ex) {
             logger.warn("Problem loading soundbank: " + ex.getMessage());
             // ignore
         }
@@ -132,12 +138,16 @@ public class Generator {
     }
 
     public ScoreContext generatePiece() {
+        return generatePiece(null);
+    }
+    
+    public ScoreContext generatePiece(UserPreferences prefs) {
         Score score = new Score();
         final ScoreContext ctx = new ScoreContext();
 
         ctx.setScore(score);
         for (ScoreManipulator manipulator : manipulators) {
-            manipulator.handleScore(score, ctx);
+            manipulator.handleScore(score, ctx, prefs);
         }
         verifyResult(ctx);
         return ctx;
@@ -215,10 +225,20 @@ public class Generator {
     }
 
     public byte[] toMp3(byte[] midi) throws Exception {
+        return toMp3(midi, null);
+    }
+    
+    public byte[] toMp3(byte[] midi, String wavPath) throws Exception {
         //allowing a maximum number users to generate tracks at the same time so that the system remains stable (midi->wav->mp3 is heavy)
         semaphore.acquire();
         try {
-            File wav = File.createTempFile("gen", ".wav");
+            File wav;
+            if (wavPath == null) {
+                wav = File.createTempFile("gen", ".wav");
+            } else {
+                wav = new File(wavPath + "/gen.wav");
+            }
+            
             long start = System.currentTimeMillis();
             try (OutputStream fos = new BufferedOutputStream(new FileOutputStream(wav))) {
                 Midi2WavRenderer.midi2wav(new ByteArrayInputStream(midi), fos);
@@ -236,7 +256,9 @@ public class Generator {
             File mp3 = File.createTempFile("gen", ".mp3");
             encoder.encode(wav, mp3, attrs);
             logger.info("wav2mp3 conversion took: " + (System.currentTimeMillis() - start) + " millis");
-            wav.delete(); //cleanup the big wav file
+            if (wavPath == null) {
+                wav.delete(); //cleanup the big wav file
+            }
             byte[] mp3Bytes = FileUtils.readFileToByteArray(mp3);
             mp3.delete();
             return mp3Bytes;
@@ -271,111 +293,163 @@ public class Generator {
         is.close();
 
     }
+    
     public static void main(String[] args) throws Exception {
-        Score score1 = new Score();
-        Read.midi(score1, "c:/tmp/gen.midi");
-        for (Part part : score1.getPartArray()) {
-            System.out.println(part.getInstrument());
+
+        Options options = new Options();
+        
+        Option opt = new Option("out", true, "Path for output");
+        opt.setRequired(true);
+        options.addOption(opt);
+        
+        Option confOpt = new Option("config", true, "Path for directory that contains a /soundbank/ dir");
+        confOpt.setRequired(true);
+        confOpt.setArgs(1);
+        options.addOption(confOpt);
+        
+        options.addOption("visualize", "Whether to visualize");
+        options.addOption("play", "Whether play the generated piece");
+        options.addOption("printstats", "Whether to print stats");
+        options.addOption("measures", true, "Number of measures in the piece");
+        options.addOption("scale", true, "The musical scale, one of: " + Arrays.toString(Scale.values()));
+        options.addOption("tempo", true, "The tempo, one of: " + Arrays.toString(Tempo.values()));
+        
+        CommandLineParser parser = new DefaultParser();
+        CommandLine cl = null;
+        try {
+            cl = parser.parse(options, args);
+        } catch (ParseException ex) {
+            HelpFormatter formatter = new HelpFormatter();
+            formatter.printHelp( "java -jar computoser.jar", options);
+            System.exit(0);
         }
+        
+        String output = cl.getOptionValue("out");
+        System.out.println("AAAA: " + output);
+        boolean visualize = false;
+        if (cl.hasOption("visualize")) {
+            visualize = Boolean.parseBoolean(cl.getOptionValue("visualize"));
+        }
+        boolean printStats = false;
+        if (cl.hasOption("printstats")) {
+            visualize = Boolean.parseBoolean(cl.getOptionValue("printstats"));
+        }
+        
+        boolean play = false;
+        if (cl.hasOption("play")) {
+            visualize = Boolean.parseBoolean(cl.getOptionValue("play"));
+        }
+        
+        UserPreferences prefs = new UserPreferences();
+        if (cl.hasOption("measures")) {
+            prefs.setMeasures(Integer.parseInt(cl.getOptionValue("measures")));
+        }
+        if (cl.hasOption("scale")) {
+            prefs.setScale(Scale.valueOf(cl.getOptionValue("scale")));
+        }
+        if (cl.hasOption("tempo")) {
+            prefs.setTempo(Tempo.valueOf(cl.getOptionValue("tempo")));
+        }
+        
         new StartupListener().contextInitialized(null);
         Generator generator = new Generator();
-        generator.configLocation = "c:/config/music";
+        generator.configLocation = cl.getOptionValue("config");
         generator.maxConcurrentGenerations = 5;
         generator.init();
 
-        UserPreferences prefs = new UserPreferences();
-        prefs.setElectronic(Ternary.YES);
-        //prefs.setSimpleMotif(Ternary.YES);
-        //prefs.setMood(Mood.MAJOR);
-        //prefs.setDrums(Ternary.YES);
-        //prefs.setClassical(true);
-        prefs.setAccompaniment(Ternary.YES);
-        prefs.setElectronic(Ternary.YES);
-        final ScoreContext ctx = generator.generatePiece();
+        final ScoreContext ctx = generator.generatePiece(prefs);
         Score score = ctx.getScore();
         for (Part part : score.getPartArray()) {
             System.out.println(part.getTitle() + ": " + part.getInstrument());
         }
 
         System.out.println("Metre: " + ctx.getMetre()[0] + "/" + ctx.getMetre()[1]);
-        System.out.println(ctx);
-        Write.midi(score, "c:/tmp/gen.midi");
+        //System.out.println(ctx);
+        Write.midi(score, output + "/gen.midi");
 
-        new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                JFrame frame = new JFrame();
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.setBounds(0, 0, 500, 500);
-                frame.setVisible(true);
-                Part part = ctx.getParts().get(PartType.MAIN);
-                Note[] notes = part.getPhrase(0).getNoteArray();
-                List<Integer> pitches = new ArrayList<Integer>();
-                for (Note note : notes) {
-                    if (!note.isRest()) {
-                        pitches.add(note.getPitch());
-                    }
-                }
-                GraphicsPanel gp = new GraphicsPanel(pitches);
-                frame.setContentPane(gp);
-            }
-        }).start();
-
-        DecimalFormat df = new DecimalFormat("#.##");
-
-        for (Part part : score.getPartArray()) {
-            StringBuilder sb = new StringBuilder();
-            printStatistics(ctx, part);
-            System.out.println("------------ " + part.getTitle() + "-----------------");
-            Phrase[] phrases = part.getPhraseArray();
-            for (Phrase phr : phrases) {
-                if (phr instanceof ExtendedPhrase) {
-                    sb.append("Contour=" + ((ExtendedPhrase) phr).getContour() + " ");
-                }
-                double measureSize = 0;
-                int measures = 0;
-                double totalLength = 0;
-                List<String> pitches = new ArrayList<String>();
-                List<String> lengths = new ArrayList<String>();
-                System.out.println("((Phrase notes: " + phr.getNoteArray().length + ")");
-                for (Note note : phr.getNoteArray()) {
-                    if (!note.isRest()) {
-                        int degree = 0;
-                        if (phr instanceof ExtendedPhrase) {
-                            degree = Arrays.binarySearch(((ExtendedPhrase) phr).getScale().getDefinition(), note.getPitch() % 12);
+        if (visualize) {
+            new Thread(new Runnable() {
+    
+                @Override
+                public void run() {
+                    JFrame frame = new JFrame();
+                    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    frame.setBounds(0, 0, 500, 500);
+                    frame.setVisible(true);
+                    Part part = ctx.getParts().get(PartType.MAIN);
+                    Note[] notes = part.getPhrase(0).getNoteArray();
+                    List<Integer> pitches = new ArrayList<Integer>();
+                    for (Note note : notes) {
+                        if (!note.isRest()) {
+                            pitches.add(note.getPitch());
                         }
-                        pitches.add(String.valueOf(note.getPitch() + " (" + degree + ") "));
-                    } else {
-                        pitches.add(" R ");
                     }
-                    lengths.add(df.format(note.getRhythmValue()));
-                    measureSize += note.getRhythmValue();
-                    totalLength += note.getRhythmValue();;
-                    if (measureSize >= ctx.getNormalizedMeasureSize()) {
-                        pitches.add(" || ");
-                        lengths.add(" || " + (measureSize > ctx.getNormalizedMeasureSize() ? "!" : ""));
-                        measureSize = 0;
-                        measures++;
+                    GraphicsPanel gp = new GraphicsPanel(pitches);
+                    frame.setContentPane(gp);
+                }
+            }).start();
+        }
+        
+        if (printStats) {
+            DecimalFormat df = new DecimalFormat("#.##");
+    
+            for (Part part : score.getPartArray()) {
+                StringBuilder sb = new StringBuilder();
+                printStatistics(ctx, part);
+                System.out.println("------------ " + part.getTitle() + "-----------------");
+                Phrase[] phrases = part.getPhraseArray();
+                for (Phrase phr : phrases) {
+                    if (phr instanceof ExtendedPhrase) {
+                        sb.append("Contour=" + ((ExtendedPhrase) phr).getContour() + " ");
                     }
+                    double measureSize = 0;
+                    int measures = 0;
+                    double totalLength = 0;
+                    List<String> pitches = new ArrayList<String>();
+                    List<String> lengths = new ArrayList<String>();
+                    System.out.println("((Phrase notes: " + phr.getNoteArray().length + ")");
+                    for (Note note : phr.getNoteArray()) {
+                        if (!note.isRest()) {
+                            int degree = 0;
+                            if (phr instanceof ExtendedPhrase) {
+                                degree = Arrays.binarySearch(((ExtendedPhrase) phr).getScale().getDefinition(), note.getPitch() % 12);
+                            }
+                            pitches.add(String.valueOf(note.getPitch() + " (" + degree + ") "));
+                        } else {
+                            pitches.add(" R ");
+                        }
+                        lengths.add(df.format(note.getRhythmValue()));
+                        measureSize += note.getRhythmValue();
+                        totalLength += note.getRhythmValue();;
+                        if (measureSize >= ctx.getNormalizedMeasureSize()) {
+                            pitches.add(" || ");
+                            lengths.add(" || " + (measureSize > ctx.getNormalizedMeasureSize() ? "!" : ""));
+                            measureSize = 0;
+                            measures++;
+                        }
+                    }
+                    sb.append(pitches.toString() + "\r\n");
+                    sb.append(lengths.toString() + "\r\n");
+                    if (part.getTitle().equals(PartType.MAIN.getTitle())) {
+                        sb.append("\r\n");
+                    }
+                    System.out.println("Phrase measures: " + measures);
+                    System.out.println("Phrase length: " + totalLength);
                 }
-                sb.append(pitches.toString() + "\r\n");
-                sb.append(lengths.toString() + "\r\n");
-                if (part.getTitle().equals(PartType.MAIN.getTitle())) {
-                    sb.append("\r\n");
-                }
-                System.out.println("Phrase measures: " + measures);
-                System.out.println("Phrase length: " + totalLength);
+                System.out.println(sb.toString());
             }
-            System.out.println(sb.toString());
+        }
+        
+        MutingPrintStream.ignore.set(true);
+        Write.midi(score, output + "/gen.midi");
+        MutingPrintStream.ignore.set(null);
+        if (play) {
+            Play.midi(score);
         }
 
-        MutingPrintStream.ignore.set(true);
-        Write.midi(score, "c:/tmp/gen.midi");
-        MutingPrintStream.ignore.set(null);
-        Play.midi(score);
-
-        generator.toMp3(FileUtils.readFileToByteArray(new File("c:/tmp/gen.midi")));
+        byte[] mp3 = generator.toMp3(FileUtils.readFileToByteArray(new File(output + "/gen.midi")), output);
+        
+        FileUtils.writeByteArrayToFile(new File(output + "/gen.mp3"), mp3);
     }
 
     @SuppressWarnings({ "unchecked", "unused" })

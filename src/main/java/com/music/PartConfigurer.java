@@ -30,35 +30,39 @@ import static com.music.model.InstrumentGroups.SPORADIC_EFFECTS_INSTRUMENTS;
 
 import java.util.Random;
 
+import com.music.model.InstrumentGroups;
+import com.music.model.PartType;
+import com.music.model.prefs.Ternary;
+import com.music.model.prefs.UserPreferences;
+import com.music.util.music.Chance;
+
 import jm.constants.Instruments;
 import jm.music.data.Part;
 import jm.music.data.Score;
-
-import com.music.model.InstrumentGroups;
-import com.music.model.PartType;
-import com.music.util.music.Chance;
 
 public class PartConfigurer implements ScoreManipulator {
     private Random random = new Random();
 
     @Override
-    public void handleScore(Score score, ScoreContext ctx) {
+    public void handleScore(Score score, ScoreContext ctx, UserPreferences prefs) {
         boolean accompaniment = Chance.test(70);
         int partIdx = 0;
         int mainInstrument = 0;
         boolean electronic = false;
-        boolean classical = Chance.test(5); //ensure some classical-sounding pieces
+        boolean classical = (prefs != null && prefs.isClassical()) || Chance.test(5); //ensure some classical-sounding pieces
         boolean counterpoint = false;
         if (classical) {
             accompaniment = true;
         }
-        if (Chance.test(1) || (classical && Chance.test(12))) {
+        if ((prefs != null && prefs.getAccompaniment() == Ternary.NO) 
+                || Chance.test(1) 
+                || (classical && Chance.test(12))) {
             counterpoint = true;
             accompaniment = false;
         }
 
         if (!accompaniment) {
-            if (Chance.test(35)) { // electronic
+            if ((prefs != null && prefs.getElectronic() == Ternary.YES) || Chance.test(35)) { // electronic
                 electronic = true;
                 ctx.setElectronic(true);
                 mainInstrument = ELECTRONIC_MAIN_PART_ONLY_INSTRUMENTS[random.nextInt(ELECTRONIC_MAIN_PART_ONLY_INSTRUMENTS.length)];
@@ -71,6 +75,11 @@ public class PartConfigurer implements ScoreManipulator {
 
         if (classical) {
             mainInstrument = Instruments.PIANO;
+        }
+        
+        // override the instrument if it was configured
+        if (prefs != null && prefs.getInstrument() != -1) {
+            mainInstrument = prefs.getInstrument();
         }
 
         Part main = new Part(PartType.MAIN.getTitle(), mainInstrument , partIdx++);
@@ -115,7 +124,7 @@ public class PartConfigurer implements ScoreManipulator {
             ctx.getParts().put(PartType.SIMPLE_BEAT, extraPart);
         }
 
-        boolean usePercussions = Chance.test(46);
+        boolean usePercussions = (prefs != null && prefs.getDrums() == Ternary.YES) || Chance.test(46);
         if (!useSimpleBeat && usePercussions && isRegularMetre(ctx) && !classical) {
             Part extraPart = new Part(PartType.PERCUSSIONS.getTitle(), 0, 9);
             extraPart.setDynamic(35); //quieter, in the background

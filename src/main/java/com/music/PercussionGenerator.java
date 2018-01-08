@@ -23,17 +23,18 @@ import java.util.List;
 import java.util.Random;
 import java.util.Vector;
 
+import com.music.model.ExtendedPhrase;
+import com.music.model.PartType;
+import com.music.model.prefs.UserPreferences;
+import com.music.util.music.Chance;
+import com.music.util.music.NoteFactory;
+
 import jm.music.data.CPhrase;
 import jm.music.data.Note;
 import jm.music.data.Part;
 import jm.music.data.Phrase;
 import jm.music.data.Rest;
 import jm.music.data.Score;
-
-import com.music.model.ExtendedPhrase;
-import com.music.model.PartType;
-import com.music.util.music.Chance;
-import com.music.util.music.NoteFactory;
 
 public class PercussionGenerator implements ScoreManipulator {
     private Random random = new Random();
@@ -43,7 +44,7 @@ public class PercussionGenerator implements ScoreManipulator {
     private int[] AVAILABLE_PERCUSSIONS = {36, 38, 42, 43, 44, 46, 48, 49, 51};
 
     @Override
-    public void handleScore(Score score, ScoreContext ctx) {
+    public void handleScore(Score score, ScoreContext ctx, UserPreferences prefs) {
         Part drumPart = ctx.getParts().get(PartType.PERCUSSIONS);
         if (drumPart == null) {
             return;

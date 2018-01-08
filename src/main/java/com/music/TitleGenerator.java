@@ -24,8 +24,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 
-import jm.music.data.Score;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
 import org.slf4j.Logger;
@@ -33,7 +31,10 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
+import com.music.model.prefs.UserPreferences;
 import com.music.util.music.Chance;
+
+import jm.music.data.Score;
 
 public class TitleGenerator implements ScoreManipulator {
 
@@ -100,7 +101,7 @@ public class TitleGenerator implements ScoreManipulator {
     }
 
     @Override
-    public void handleScore(Score score, ScoreContext ctx) {
+    public void handleScore(Score score, ScoreContext ctx, UserPreferences prefs) {
         String structure = structures.get(random.nextInt(structures.size()));
         logger.debug(structure + "= ");
         // getting all of them, rather than checking if they are needed - no difference in speed

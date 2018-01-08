@@ -43,7 +43,7 @@ public class TimelineMusic {
     private Long id;
 
     @ManyToOne
-    public Piece piece;
+    private Piece piece;
 
     @Column
     private Variation variation;

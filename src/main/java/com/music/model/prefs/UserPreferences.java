@@ -35,7 +35,8 @@ public class UserPreferences {
     private Variation variation = Variation.ANY;
     private boolean preferDissonance;
     private int instrument = -1;
-
+    private int measures;
+    
     public boolean isClassical() {
         return classical;
     }
@@ -130,6 +131,14 @@ public class UserPreferences {
 
     public void setScale(Scale scale) {
         this.scale = scale;
+    }
+
+    public int getMeasures() {
+        return measures;
+    }
+
+    public void setMeasures(int measures) {
+        this.measures = measures;
     }
 
     /**

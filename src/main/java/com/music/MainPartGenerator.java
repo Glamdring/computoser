@@ -28,15 +28,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import jm.JMC;
-import jm.constants.Pitches;
-import jm.music.data.Note;
-import jm.music.data.Part;
-import jm.music.data.Phrase;
-import jm.music.data.Rest;
-import jm.music.data.Score;
-import jm.music.tools.Mod;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,12 +40,22 @@ import com.music.model.PartType;
 import com.music.model.Scale;
 import com.music.model.SpecialNoteType;
 import com.music.model.ToneType;
+import com.music.model.prefs.UserPreferences;
 import com.music.tools.SongDBAnalyzer;
 import com.music.util.music.Cadences;
 import com.music.util.music.Chance;
 import com.music.util.music.ChordUtils;
 import com.music.util.music.NoteFactory;
 import com.music.util.music.ToneResolver;
+
+import jm.JMC;
+import jm.constants.Pitches;
+import jm.music.data.Note;
+import jm.music.data.Part;
+import jm.music.data.Phrase;
+import jm.music.data.Rest;
+import jm.music.data.Score;
+import jm.music.tools.Mod;
 
 public class MainPartGenerator implements ScoreManipulator {
     private static final Logger logger = LoggerFactory.getLogger(MainPartGenerator.class);
@@ -65,7 +66,7 @@ public class MainPartGenerator implements ScoreManipulator {
     private static final int[] NOTE_LENGTH_PERCENTAGES = new int[] {10, 31, 40, 7, 9, 3};
 
     @Override
-    public void handleScore(Score score, ScoreContext ctx) {
+    public void handleScore(Score score, ScoreContext ctx, UserPreferences prefs) {
         // TODO http://en.wikipedia.org/wiki/Tonicization (+ secondary dominant)
         // http://en.wikipedia.org/wiki/Nonchord_tone (All types of tones below)
         // http://en.wikipedia.org/wiki/Counterpoint allow for a secondary main part instead of accompaniment (counterpoint part should follow main part somehow)
