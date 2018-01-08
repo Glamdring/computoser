@@ -302,11 +302,7 @@ public class Generator {
         opt.setRequired(true);
         options.addOption(opt);
         
-        Option confOpt = new Option("config", true, "Path for directory that contains a /soundbank/ dir");
-        confOpt.setRequired(true);
-        confOpt.setArgs(1);
-        options.addOption(confOpt);
-        
+        options.addOption("config", true, "Path for directory that contains a /soundbank/ dir");
         options.addOption("visualize", "Whether to visualize");
         options.addOption("play", "Whether play the generated piece");
         options.addOption("printstats", "Whether to print stats");
@@ -325,7 +321,6 @@ public class Generator {
         }
         
         String output = cl.getOptionValue("out");
-        System.out.println("AAAA: " + output);
         boolean visualize = false;
         if (cl.hasOption("visualize")) {
             visualize = Boolean.parseBoolean(cl.getOptionValue("visualize"));
@@ -351,7 +346,8 @@ public class Generator {
             prefs.setTempo(Tempo.valueOf(cl.getOptionValue("tempo")));
         }
         
-        new StartupListener().contextInitialized(null);
+        System.setOut(new MutingPrintStream(new ByteArrayOutputStream(), System.out));
+        
         Generator generator = new Generator();
         generator.configLocation = cl.getOptionValue("config");
         generator.maxConcurrentGenerations = 5;

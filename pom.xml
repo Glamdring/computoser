@@ -128,7 +128,32 @@
 					</execution>
 				</executions>
 			</plugin>
-
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.1.0</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<artifactSet>
+								<excludes>
+									<exclude>edu.stanford.nlp:stanford-corenlp</exclude>
+								</excludes>
+							</artifactSet>
+							<transformers>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<mainClass>com.music.Generator</mainClass>
+								</transformer>
+							</transformers>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 		<pluginManagement>
 			<plugins>
@@ -437,12 +462,13 @@
 			<artifactId>rome</artifactId>
 			<version>1.0</version>
 		</dependency>
+		<!-- <dependency> <groupId>jMusic</groupId> <artifactId>jMusic</artifactId> 
+			<version>1.6.3</version> <systemPath>${basedir}/lib/jMusic1.6.4.jar</systemPath> 
+			<scope>system</scope> </dependency> -->
 		<dependency>
-			<groupId>jMusic</groupId>
-			<artifactId>jMusic</artifactId>
-			<version>1.6.3</version>
-			<systemPath>${basedir}/lib/jMusic1.6.4.jar</systemPath>
-			<scope>system</scope>
+			<groupId>com.explodingart</groupId>
+			<artifactId>jmusic</artifactId>
+			<version>1.6.4</version>
 		</dependency>
 		<dependency>
 			<groupId>gervill</groupId>
@@ -458,6 +484,20 @@
 			<systemPath>${basedir}/lib/jave-1.0.2.jar</systemPath>
 			<scope>system</scope>
 		</dependency>
+		<!-- Remove comments in case you want to build fat jar -->
+		<!-- 
+		<dependency>
+            <groupId>com.music</groupId>
+            <artifactId>gervill</artifactId>
+            <version>0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.music</groupId>
+            <artifactId>jave</artifactId>
+            <version>1.0.2</version>
+        </dependency>
+        -->
+        <!--  -->
 		<dependency>
 			<groupId>commons-cli</groupId>
 			<artifactId>commons-cli</artifactId>
