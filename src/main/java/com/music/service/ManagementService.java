@@ -20,6 +20,7 @@ package com.music.service;
 
 import java.io.File;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
 
@@ -129,7 +130,7 @@ public class ManagementService {
             try {
                 InputStream is = pieceService.getPieceMidiFile(piece.getId());
                 byte[] midi = IOUtils.toByteArray(is);
-                File tmp = File.createTempFile("tmp", "mid");
+                File tmp = Files.createTempFile("tmp", "mid").toFile();
                 FileUtils.writeByteArrayToFile(tmp, midi);
                 Score score = new Score();
                 Read.midi(score, tmp.getAbsolutePath());

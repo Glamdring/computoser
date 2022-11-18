@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
+import java.nio.file.Files;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -234,7 +235,7 @@ public class Generator {
         try {
             File wav;
             if (wavPath == null) {
-                wav = File.createTempFile("gen", ".wav");
+                wav = Files.createTempFile("gen", ".wav").toFile();
             } else {
                 wav = new File(wavPath + "/gen.wav");
             }
@@ -253,7 +254,7 @@ public class Generator {
 //            audio.setSamplingRate(20000);
             attrs.setAudioAttributes(audio);
             attrs.setThreads(1);
-            File mp3 = File.createTempFile("gen", ".mp3");
+            File mp3 = Files.createTempFile("gen", ".mp3").toFile();
             encoder.encode(wav, mp3, attrs);
             logger.info("wav2mp3 conversion took: " + (System.currentTimeMillis() - start) + " millis");
             if (wavPath == null) {
