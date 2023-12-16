@@ -20,27 +20,27 @@
 	<repositories>
 		<repository>
 			<id>maven</id>
-			<url>http://repo1.maven.org/maven2/</url>
+			<url>https://repo1.maven.org/maven2/</url>
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
 		</repository>
 		<repository>
 			<id>java.net</id>
-			<url>http://download.java.net/maven/2</url>
+			<url>https://download.java.net/maven/2</url>
 		</repository>
 		<repository>
 			<id>org.springframework.maven.snapshots</id>
-			<url>http://s3.amazonaws.com/maven.springframework.org/snapshot</url>
+			<url>https://s3.amazonaws.com/maven.springframework.org/snapshot</url>
 		</repository>
 		<repository>
 			<id>repository.springframework.milestone</id>
 			<name>Spring Framework Maven Milestone Repository</name>
-			<url>http://maven.springframework.org/milestone</url>
+			<url>https://maven.springframework.org/milestone</url>
 		</repository>
 		<repository>
 			<id>spring-libs</id>
-			<url>http://repo.springsource.org/libs-release</url>
+			<url>https://repo.springsource.org/libs-release</url>
 		</repository>
 
 		<repository>
@@ -56,7 +56,7 @@
 		</repository>
 		<repository>
 			<id>apache</id>
-			<url>http://repository.apache.org/</url>
+			<url>https://repository.apache.org/</url>
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
